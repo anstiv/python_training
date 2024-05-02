@@ -16,5 +16,5 @@ def test_add_empty_contact(app):
     app.session.login("admin", "secret")
     app.contact.create(Contact("", "", "", "", "", "",
                                "", "", "", "", "", "", "",
-                               "", "", "", "-", "", "", "-"))
+                               "", "", "", "-", "", "-", "-"))
     app.session.logout()
