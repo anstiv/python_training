@@ -26,9 +26,26 @@ class ContactHelper:
         wd.find_element_by_xpath("//input[@value='Delete']").click()
         self.contact_cache = None
 
+    def delete_contact_by_id(self, id):
+        wd = self.app.wd
+        self.app.open_home_page()
+        wd.find_element_by_css_selector("a[href='edit.php?id=%s']" % id).click()
+        # submit deletion
+        wd.find_element_by_xpath("//input[@value='Delete']").click()
+        self.contact_cache = None
+
     def modify_contact_by_index(self, index, contact):
         wd = self.app.wd
         self.open_contact_to_edit_by_index(index)
+        self.fill_contact_form(contact)
+        # confirm changes
+        wd.find_element_by_name("update").click()
+        self.return_to_home_page()
+        self.contact_cache = None
+
+    def modify_contact_by_id(self, id, contact):
+        wd = self.app.wd
+        self.open_contact_to_edit_by_id(id)
         self.fill_contact_form(contact)
         # confirm changes
         wd.find_element_by_name("update").click()
@@ -105,11 +122,23 @@ class ContactHelper:
         # select contact by index
         wd.find_elements_by_xpath("//img[@alt='Edit']")[index].click()
 
+    def open_contact_to_edit_by_id(self, id):
+        wd = self.app.wd
+        self.app.open_home_page()
+        # select contact by id
+        wd.find_element_by_css_selector("a[href='edit.php?id=%s']" % id).click()
+
     def open_contact_to_view_by_index(self, index):
         wd = self.app.wd
         self.app.open_home_page()
         # select contact by index
         wd.find_elements_by_xpath("//img[@alt='Details']")[index].click()
+
+    def open_contact_to_view_by_id(self, id):
+        wd = self.app.wd
+        self.app.open_home_page()
+        # select contact by id
+        wd.find_element_by_xpath("//a[contains(@href, 'edit.php?id="+str(id)+"')]").click()
 
     def get_contact_info_from_edit_page(self, index):
         wd = self.app.wd
